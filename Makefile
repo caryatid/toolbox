@@ -12,10 +12,16 @@ MDIRS = $(IDIR) $(SDIR)
 build: $(REPOS)
 
 $(MDIRS):
-	mkdir -p $@
+	mkdir -p $@/lib
+	mkdir -p $@/bin
+	mkdir -p $@/include 
 
-$(REPOS): $(MDIRS)
-	cd $(SDIR) && (test -d $@ || git clone $(${@}_i_repo)) && cd $@ && \
+fake-libs: $(MDIRS)
+	x86_64-alpine-linux-musl-gcc-ar rcs $(IDIR)/lib/libssp_nonshared.a
+	x86_64-alpine-linux-musl-gcc-ar rcs $(IDIR)/lib/libssp.a
+
+$(REPOS): fake-libs
+	@cd $(SDIR) && (test -d $@ || git clone $(${@}_i_repo)) && cd $@ && \
 	git checkout $(${@}_i_branch) && git pull && (git remote show og || \
 		git remote add -f og $(${@}_repo)) && git rebase $(I) og/$(${@}_branch) && \
 	echo '-- ABOUT TO MAKE $(@) --' && \

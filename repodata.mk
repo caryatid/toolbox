@@ -20,7 +20,7 @@ netbsd-curses_repo = git@github.com:sabotage-linux/netbsd-curses
 netbsd-curses_branch = master
 netbsd-curses_i_repo = git@github.com:caryatid/netbsd-curses
 netbsd-curses_i_branch = master
-netbsd-curses_i_makefile = GNUmakefile
+netbsd-curses_i_makefile = Makefile_
 
 vis_repo = git@github.com:martanne/vis
 vis_branch = master
