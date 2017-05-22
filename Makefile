@@ -11,7 +11,7 @@ MAKEDEFS = PREFIX=$(PFIX) CC="$(PFIX)/bin/musl-gcc -static"
 
 MDIRS = $(IDIR) $(SDIR)
 
-build: $(REPOS)
+build: $(REPOS) tarball
 
 $(MDIRS):
 	mkdir -p $@
@@ -31,6 +31,6 @@ $(REPOS): fake-libs
 		(echo busted at $@; exit 1)) && \
 	echo '-- MADE $(@) --'
 
-tarball: build
+tarball:
 	cd $(IDIR) && tar -c . | gzip >$(OGDIR)/toolbox.tar.gz
 
