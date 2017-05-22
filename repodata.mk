@@ -57,3 +57,28 @@ simple-plan_branch = master
 simple-plan_i_repo = git@github.com:caryatid/simple-plan
 simple-plan_i_branch = master
 simple-plan_i_makefile = Makefile
+
+libtermkey_repo = git@github.com:neovim/libtermkey
+libtermkey_branch = master
+libtermkey_i_repo = git@github.com:caryatid/libtermkey
+libtermkey_i_branch = master
+libtermkey_i_makefile = Makefile_
+
+
+unibilium_repo = git@github.com:mauke/unibilium.git
+unibilium_branch = master
+unibilium_i_repo = git@github.com:caryatid/unibilium
+unibilium_i_branch = master
+unibilium_i_makefile = Makefile_
+
+lua_repo = git@github.com:caryatid/lua.git
+lua_branch = master
+lua_i_repo = git@github.com:caryatid/lua
+lua_i_branch = master
+lua_i_makefile = Makefile_
+
+lpeg_repo = git@github.com:caryatid/lpeg.git
+lpeg_branch = master
+lpeg_i_repo = git@github.com:caryatid/lpeg
+lpeg_i_branch = master
+lpeg_i_makefile = Makefile

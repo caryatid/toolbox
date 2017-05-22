@@ -1,5 +1,5 @@
 I =  # set to '-i' for interactive
-REPOS = musl netbsd-curses abduco dvtm vis dwm st ii plans simple-plan
+REPOS = musl lua lpeg netbsd-curses unibilium libtermkey abduco dvtm vis dwm st ii plans simple-plan
 include repodata.mk
 
 OGDIR = $(PWD)
