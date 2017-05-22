@@ -12,11 +12,10 @@ MDIRS = $(IDIR) $(SDIR)
 build: $(REPOS)
 
 $(MDIRS):
-	mkdir -p $@/lib
-	mkdir -p $@/bin
-	mkdir -p $@/include 
+	mkdir -p $@
 
 fake-libs: $(MDIRS)
+	mkdir -p $(IDIR)/lib
 	x86_64-alpine-linux-musl-gcc-ar rcs $(IDIR)/lib/libssp_nonshared.a
 	x86_64-alpine-linux-musl-gcc-ar rcs $(IDIR)/lib/libssp.a
 
