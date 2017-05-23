@@ -82,3 +82,9 @@ lpeg_branch = master
 lpeg_i_repo = git@github.com:caryatid/lpeg
 lpeg_i_branch = master
 lpeg_i_makefile = Makefile
+
+gcc_repo = git@github.com:gcc-mirror/gcc
+gcc_branch = master
+gcc_i_repo = git@github.com:caryatid/gcc
+gcc_i_branch = master
+gcc_i_makefile = Makefile

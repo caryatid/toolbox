@@ -1,1 +1,3 @@
-do rebase separately
+change to script for building that Makefile calls.
+    too much todo for a simple makefile; boo hoo
+
