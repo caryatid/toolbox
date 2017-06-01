@@ -1,37 +1,57 @@
 #!/bin/sh
 
-REPOS = musl lua lpeg netbsd-curses unibilium libtermkey abduco dvtm vis ii plans simple-plan
-include repodata.mk
+TMP=$(mktemp -d)
+trap "rm -rf $TMP" EXIT
 
-OGDIR = $(PWD)
-IDIR = dependency/install
-SDIR = dependency/repos
-PFIX = $(OGDIR)/$(IDIR)
-LD_LIBRARY_PATH=$(PFIX)/lib
-MAKEDEFS = PREFIX=$(PFIX) CC="$(PFIX)/bin/musl-gcc -static"
+OGDIR=$(pwd)
+SDIR=dependency/repos
+IDIR=dependency/install
+RDATA=./repodata.csv
 
-MDIRS = $(IDIR) $(SDIR)
+mkdir -p "$SDIR"; mkdir -p "$IDIR"
+cat <<'EOF' >$TMP/select_fmt
+BEGIN { FS="," }
+NR == 1 { for (i=1; i<=NF;i++) { if ($i == "%s") fnum = i }}
+NR > 1 { printf("%%-23s: %%s\\n", $1, $fnum) }
+EOF
 
-build: $(REPOS) tarball
+_list_fields () {
+    head -n1 "$RDATA" | sed 's/,/ /g'
+}
 
-$(MDIRS):
-	mkdir -p $@
+_get_by_field () {
+    local field="${1:-name}"
+    printf "$(cat $TMP/select_fmt)" "$field" >$TMP/select
+    awk -f $TMP/select "$RDATA"
+}
+    
+get () {
+    local repo=${1:-
+    git clone $(_get_by_field "$repo")
+}
 
-fake-libs: $(MDIRS)
-	mkdir -p $(IDIR)/lib
-	ar rcs $(IDIR)/lib/libssp_nonshared.a
-	ar rcs $(IDIR)/lib/libssp.a
+update_local () {
+    echo not implemented
+}
 
-$(REPOS): fake-libs
-	@cd $(SDIR) && (test -d $@ || git clone $(${@}_i_repo)) && cd $@ && \
-	git checkout $(${@}_i_branch) && git pull && (git remote show og || \
-		git remote add -f og $(${@}_repo)) && git rebase $(I) og/$(${@}_branch) && \
-	echo '-- ABOUT TO MAKE $(@) --' && \
-	((test -f $(${@}_i_makefile) && make -f $(${@}_i_makefile) $(MAKEDEFS) && \
-	    make -f $(${@}_i_makefile) $(MAKEDEFS) install) || \
-		(echo busted at $@; exit 1)) && \
-	echo '-- MADE $(@) --'
+reset_local () {
+    echo not implemented
+}
 
-tarball:
-	cd $(IDIR) && tar -c . | gzip >$(OGDIR)/toolbox.tar.gz
+build_env () {
+    echo not implemented
+}
 
+build () {
+    echo not implemented
+}
+
+install () {
+    echo not implemented
+}
+
+remote () {
+    echo not implemented
+}
+
+_get_by_field "$1"
