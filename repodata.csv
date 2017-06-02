@@ -1,4 +1,4 @@
-name,og-repo,branch,internal-repo,internal-branch
+name,og-repo,og-branch,internal-repo,internal-branch
 gcc,git@github.com:gcc-mirror/gcc,master,git@github.com:caryatid/gcc,master
 musl,git://git.musl-libc.org/musl,master,git@github.com:caryatid/musl,master
 abduco,git@github.com:martanne/abduco,master,git@github.com:caryatid/abduco,master
@@ -12,5 +12,5 @@ plans,git@github.com:caryatid/plans,master,git@github.com:caryatid/plans,master
 simple-plan,git@github.com:caryatid/simple-plan,master,git@github.com:caryatid/simple-plan,master
 libtermkey,git@github.com:neovim/libtermkey,master,git@github.com:caryatid/libtermkey,master
 unibilium,git@github.com:mauke/unibilium.git,master,git@github.com:caryatid/unibilium,master
-lua,git@github.com:caryatid/lua.git,master,git@github.com:caryatid/lua,master
+lua,git@github.com:lua/lua.git,master,git@github.com:caryatid/lua,master
 lpeg,git@github.com:caryatid/lpeg.git,master,git@github.com:caryatid/lpeg,master
