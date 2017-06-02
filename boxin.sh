@@ -72,6 +72,11 @@ build_env () {
     cd "$SDIR/musl"
     ./configure --prefix="$IDIR" --disable-shared
     make && make install   
+    cd "$OGDIR"
+    clone_repo gcc
+    cd "$SDIR/gcc"
+    ./configure --prefix="$IDIR" --disable-shared --disable-multilib
+    make && make install
 }
 
 build () {
