@@ -53,23 +53,6 @@ clone_repo () {
     git checkout $(_get_value "$id" branch)
 }
 
-update_internal () {
-    test -z "$1" && return 1
-    local id="$1"; clone_repo "$id"; cd "$SDIR/$id"
-    git rebase $I og/$(_get_value "$id" og-branch) \
-        || { echo rebase fail; return 1 ;}
-    cd "$OGDIR"
-}
-
-reset_internal () {
-    test -z "$1" && return 1
-    local id="$1"; clone_repo "$id"; cd "$SDIR/$id"
-    git branch "$(date -I)-reset"; git fetch --all
-    git reset --hard og/$(_get_value "$id" og-branch)
-    git push --force
-    cd "$OGDIR"
-}
-
 build_env () {
     clone_repo musl
     cd "$SDIR/musl"
