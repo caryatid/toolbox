@@ -80,6 +80,7 @@ _clean () {
 fetch_repo () { 
     local id="$1"; cd "$SRC_D"
     local scm=$(_get_value "$id" scm)
+    rm -rf "$id"
     case $scm in
     hg)
         $scm clone $(_get_value "$id" repo) "$id"
@@ -88,10 +89,13 @@ fetch_repo () {
         ;;
     git)
         $scm clone $(_get_value "$id" repo) "$id"
+        cd "$id"
         $scm checkout $(_get_value "$id" branch)
         ;;
     tar-gz)
-        curl $(_get_value "$id" repo) | tar -xz
+        mkdir -p "$id"
+        curl $(_get_value "$id" repo) | tar --strip-components=1 -C "$id" -xz
+        cd "$id"
     esac
 }
 
