@@ -80,20 +80,18 @@ _clean () {
 fetch_repo () { 
     local id="$1"; cd "$SRC_D"
     local scm=$(_get_value "$id" scm)
-    if test -e "$id"
-    then
-        echo "$id" already there        
-    else
-        $scm clone $(_get_value "$id" repo) "$id"
-    fi
-    cd "$id"
     case $scm in
     hg)
+        $scm clone $(_get_value "$id" repo) "$id"
+        cd "$id"
         $scm update $(_get_value "$id" branch)
         ;;
     git)
+        $scm clone $(_get_value "$id" repo) "$id"
         $scm checkout $(_get_value "$id" branch)
         ;;
+    tar-gz)
+        curl $(_get_value "$id" repo) | tar -xz
     esac
 }
 
@@ -118,8 +116,9 @@ remote () {
 # _get_value "$1" "$2"
 #clone_repo "$1"
 # reset_internal "$1"
-_list_fields
-_get_column "$@"
-_get_value st repo
-build_repo binutils
+fetch_repo mpfr
+# _list_fields
+# _get_column "$@"
+# _get_value st repo
+# build_repo binutils
 #build_repo gmp

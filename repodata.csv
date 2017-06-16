@@ -1,5 +1,6 @@
 name,repo,branch,scm
 gmp,https://gmplib.org/repo/gmp/,default,hg
+mpfr,www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz,none,tar-gz
 binutils,git://sourceware.org/git/binutils-gdb.git,master,git
 gcc,git@github.com:gcc-mirror/gcc,master,git
 musl,git://git.musl-libc.org/musl,master,git
