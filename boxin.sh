@@ -9,13 +9,20 @@ trap "rm -rf $TMP" EXIT
 #   musl
 #   gcc
 
+OG_D="$PWD"
 PRE_D="$PWD"
+CODE_D="$PWD"
+
+
+SH_D="$CODE_D/scripts"
+RDATA="$CODE_D/repodata.csv"
+
 SRC_D="$PRE_D/src"
 INS_D="$PRE_D/ins"
 BLD_D="$PRE_D/bld"
 PCH_D="$PRE_D/pch"
-RDATA="$PRE_D/repodata.csv"
 mkdir -p "$SRC_D" "$INS_D" "$BLD_D" "$PCH_D"
+
 
 cat <<'EOF' >$TMP/column
 BEGIN { FS=","; COL=ARGV[2]; ARGV[2]=""}
@@ -44,29 +51,57 @@ _get_value () {
     awk -f $TMP/value "$RDATA" "$id" "$column"
 }
 
-clone_repo () { 
-    test -z "$1" && return 1
+
+_patch () {
+    echo "patch not implemented, arg: $1"
+}
+
+_make () {
+    local id="$1"
+    local script="$SH_D/${id}.sh"
+    if test -f "$script"
+    then
+        sh "$script" "$SRC_D/$id" "$INS_D"
+    else
+        local conf="$SRC_D/$id/configure"
+        test -f "$conf" && "$conf" --prefix="$INS_D" \
+            --disable-shared \
+            --target=x86_64-alpine-linux-musl
+        make && make install
+    fi
+} 
+
+_clean () {
+    rm -rf "$SRC_D" "$INS_D" "$BLD_D" "$PCH_D"
+}
+
+fetch_repo () { 
     local id="$1"; cd "$SRC_D"
-    test -e "$id" && rm -Rf "$id"
-    git clone $(_get_value "$id" repo) "$id"
+    local scm=$(_get_value "$id" scm)
+    if test -e "$id"
+    then
+        echo "$id" already there        
+    else
+        $scm clone $(_get_value "$id" repo) "$id"
+    fi
     cd "$id"
-    git checkout $(_get_value "$id" branch)
+    case $scm in
+    hg)
+        $scm update $(_get_value "$id" branch)
+        ;;
+    git)
+        $scm checkout $(_get_value "$id" branch)
+        ;;
+    esac
 }
 
-build_env () {
-    clone_repo musl
-    cd "$SDIR/musl"
-    ./configure --prefix="$IDIR" --disable-shared
-    make && make install   
-    cd "$OGDIR"
-    clone_repo gcc
-    cd "$SDIR/gcc"
-    ./configure --prefix="$IDIR" --disable-shared --disable-multilib
-    make && make install
-}
-
-build () {
-    echo not implemented
+build_repo () {
+    local id="$1"
+    local bld="$BLD_D/$id"; mkdir -p "$bld"
+    fetch_repo "$id"
+    _patch "$id"
+    cd "$bld"
+    _make "$id"
 }
 
 install () {
@@ -84,4 +119,5 @@ remote () {
 _list_fields
 _get_column "$@"
 _get_value st repo
-clone_repo binutils
+# build_repo binutils
+build_repo gmp
