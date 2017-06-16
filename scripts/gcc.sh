@@ -1,14 +1,12 @@
-SRC="$1"
-INS="$2"
+SRC="$1"; shift
 
-"$SRC/configure" --prefix="$INS" --disable-shared \
+"$SRC/configure"                                   \
     --with-sysroot="$INS"                          \
     --with-newlib                                  \
     --without-headers                              \
     --with-local-prefix="$INS"                     \
     --with-native-system-header-dir="$INS/include" \
     --disable-nls                                  \
-    --disable-shared                               \
     --disable-multilib                             \
     --disable-decimal-float                        \
     --disable-threads                              \
@@ -19,6 +17,7 @@ INS="$2"
     --disable-libssp                               \
     --disable-libvtv                               \
     --disable-libstdcxx                            \
-    --enable-languages=c
+    --enable-languages=c                           \
+    "$@"
 
 make

@@ -21,7 +21,10 @@ SRC_D="$PRE_D/src"
 INS_D="$PRE_D/ins"
 BLD_D="$PRE_D/bld"
 PCH_D="$PRE_D/pch"
+CONFFLAGS="--prefix=$INS_D --disable-shared"
+TARGET=x86_64-alpine-linux-musl
 mkdir -p "$SRC_D" "$INS_D" "$BLD_D" "$PCH_D"
+
 
 
 cat <<'EOF' >$TMP/column
@@ -61,12 +64,11 @@ _make () {
     local script="$SH_D/${id}.sh"
     if test -f "$script"
     then
-        sh "$script" "$SRC_D/$id" "$INS_D"
+        echo sh "$script" "$SRC_D/$id" $TARGET $CONFFLAGS
+        sh "$script" "$SRC_D/$id" $TARGET $CONFFLAGS
     else
         local conf="$SRC_D/$id/configure"
-        test -f "$conf" && "$conf" --prefix="$INS_D" \
-            --disable-shared \
-            --target=x86_64-alpine-linux-musl
+        test -f "$conf" && "$conf" --target=$TARGET $CONFFLAGS
         make && make install
     fi
 } 
@@ -119,5 +121,5 @@ remote () {
 _list_fields
 _get_column "$@"
 _get_value st repo
-# build_repo binutils
-build_repo gmp
+build_repo binutils
+#build_repo gmp
