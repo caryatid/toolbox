@@ -12,7 +12,7 @@ trap "rm -rf $TMP" EXIT
 OG_D="$PWD"
 PRE_D="$PWD"
 CODE_D="$PWD"
-
+FRESH=no
 
 SH_D="$CODE_D/scripts"
 RDATA="$CODE_D/repodata.csv"
@@ -23,9 +23,8 @@ BLD_D="$PRE_D/bld"
 PCH_D="$PRE_D/pch"
 CONFFLAGS="--prefix=$INS_D --disable-shared"
 TARGET=x86_64-alpine-linux-musl
+
 mkdir -p "$SRC_D" "$INS_D" "$BLD_D" "$PCH_D"
-
-
 
 cat <<'EOF' >$TMP/column
 BEGIN { FS=","; COL=ARGV[2]; ARGV[2]=""}
@@ -54,6 +53,14 @@ _get_value () {
     awk -f $TMP/value "$RDATA" "$id" "$column"
 }
 
+_loop_repos () {
+    local func=$1
+    local file="$2"
+    for r in $(cat "$file")
+    do
+        $func $r
+    done
+}
 
 _patch () {
     echo "patch not implemented, arg: $1"
@@ -64,8 +71,7 @@ _make () {
     local script="$SH_D/${id}.sh"
     if test -f "$script"
     then
-        echo sh "$script" "$SRC_D/$id" $TARGET $CONFFLAGS
-        sh "$script" "$SRC_D/$id" $TARGET $CONFFLAGS
+        sh "$script" "$SRC_D/$id" "$INS_D" $TARGET $CONFFLAGS
     else
         local conf="$SRC_D/$id/configure"
         test -f "$conf" && "$conf" --target=$TARGET $CONFFLAGS
@@ -73,14 +79,15 @@ _make () {
     fi
 } 
 
-_clean () {
+clean () {
     rm -rf "$SRC_D" "$INS_D" "$BLD_D" "$PCH_D"
 }
 
 fetch_repo () { 
     local id="$1"; cd "$SRC_D"
     local scm=$(_get_value "$id" scm)
-    rm -rf "$id"
+    test -d "$id" && test $FRESH == "yes" && rm -rf "$id" 
+    test -d "$id" && return
     case $scm in
     hg)
         $scm clone $(_get_value "$id" repo) "$id"
@@ -108,6 +115,14 @@ build_repo () {
     _make "$id"
 }
 
+shell_repo () {
+    local id="$1"
+    local src="$SRC_D/$id"
+    test -d "$src" || return
+    echo '--| entering' "$id" 'directory in a subshell |--'
+    cd "$src"; PS1_SUB="[$id]" $SHELL
+}
+
 install () {
     echo not implemented
 }
@@ -116,13 +131,44 @@ remote () {
     echo not implemented
 }
 
-# _get_column "$2"
-# _get_value "$1" "$2"
-#clone_repo "$1"
-# reset_internal "$1"
-fetch_repo mpfr
-# _list_fields
-# _get_column "$@"
-# _get_value st repo
-# build_repo binutils
-#build_repo gmp
+while test -n "$1" && test "$1" != "${1#-*}"
+do
+    # TODO split up multiple flags, one dash
+    case "$1" in
+    --) echo end of args; shift ;;
+    -f|--fresh) FRESH=yes; shift ;;
+    *) break; ;;
+    esac
+done
+
+cmd="$1"
+test -z "$cmd" && cmd=help || shift
+
+### repo sets
+if test -z $1 
+then
+    _get_column >$TMP/rset
+else
+    echo $1 | tr ',' '\n' >$TMP/rset
+fi
+_get_column name | grep -Ff $TMP/rset >$TMP/repos
+
+case "$cmd" in 
+fetch)
+    _loop_repos fetch_repo $TMP/repos
+    ;;
+build)
+    _loop_repos build_repo $TMP/repos
+    ;;
+shell)
+    _loop_repos shell_repo $TMP/repos
+    ;;
+list)
+    echo build order
+    echo -----------
+    _get_column
+    ;;
+clean)
+    clean
+    ;;
+esac

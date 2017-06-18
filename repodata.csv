@@ -1,8 +1,9 @@
 name,repo,branch,scm
+binutils,git://sourceware.org/git/binutils-gdb.git,master,git
 gmp,https://gmplib.org/repo/gmp/,default,hg
 mpfr,www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz,none,tar-gz
-binutils,git://sourceware.org/git/binutils-gdb.git,master,git
-gcc,git@github.com:gcc-mirror/gcc,master,git
+mpc,https://scm.gforge.inria.fr/anonscm/git/mpc/mpc.git,master,git
+gcc,git@github.com:gcc-mirror/gcc,tags/gcc-7_1_0-release,git
 musl,git://git.musl-libc.org/musl,master,git
 abduco,git@github.com:martanne/abduco,master,git
 dvtm,git@github.com:martanne/dvtm,master,git

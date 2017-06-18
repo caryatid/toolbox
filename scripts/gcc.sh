@@ -1,23 +1,29 @@
 SRC="$1"; shift
+INS="$1"; shift
+TGT="$1"; shift
 
+  #  --with-gmp="$INS"                              \
+  #  --with-mpfr="$INS"                             \
+  #  --with-mpc="$INS"                              \
+set -e 
 "$SRC/configure"                                   \
+    --target=$TGT                                  \
     --with-sysroot="$INS"                          \
-    --with-newlib                                  \
-    --without-headers                              \
-    --with-local-prefix="$INS"                     \
-    --with-native-system-header-dir="$INS/include" \
-    --disable-nls                                  \
+    --enable-default-pie                           \
+    --with-native-system-header-dir=/include       \
     --disable-multilib                             \
-    --disable-decimal-float                        \
-    --disable-threads                              \
-    --disable-libatomic                            \
-    --disable-libgomp                              \
-    --disable-libmpx                               \
-    --disable-libquadmath                          \
-    --disable-libssp                               \
-    --disable-libvtv                               \
     --disable-libstdcxx                            \
     --enable-languages=c                           \
+    --with-newlib                                  \
+    --disable-libssp                               \
+    --disable-nls                                  \
+    --disable-libquadmath                          \
+    --disable-threads                              \
+    --disable-decimal-float                        \
+    --disable-libmudflap                           \
+    --disable-libgomp                              \
+    --disable-libmpx                               \
+    --disable-libatomic                            \
     "$@"
 
-make
+make && make install
