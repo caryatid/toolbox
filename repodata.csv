@@ -3,8 +3,9 @@ binutils,git://sourceware.org/git/binutils-gdb.git,master,git
 gmp,https://gmplib.org/repo/gmp/,default,hg
 mpfr,www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz,none,tar-gz
 mpc,https://scm.gforge.inria.fr/anonscm/git/mpc/mpc.git,master,git
-gcc,git@github.com:gcc-mirror/gcc,tags/gcc-7_1_0-release,git
+gcc1,git@github.com:gcc-mirror/gcc,tags/gcc-7_1_0-release,git
 musl,git://git.musl-libc.org/musl,master,git
+gcc2,git@github.com:gcc-mirror/gcc,tags/gcc-7_1_0-release,git
 abduco,git@github.com:martanne/abduco,master,git
 dvtm,git@github.com:martanne/dvtm,master,git
 netbsd-curses,git@github.com:sabotage-linux/netbsd-curses,master,git

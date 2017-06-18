@@ -3,12 +3,6 @@
 TMP=$(mktemp -d)
 trap "rm -rf $TMP" EXIT
 
-# toolchain build order
-#   binutils
-#   gcc-temp
-#   musl
-#   gcc
-
 OG_D="$PWD"
 PRE_D="$PWD"
 CODE_D="$PWD"
@@ -21,6 +15,7 @@ SRC_D="$PRE_D/src"
 INS_D="$PRE_D/ins"
 BLD_D="$PRE_D/bld"
 PCH_D="$PRE_D/pch"
+export PATH="$INS_D/bin:$PATH"
 CONFFLAGS="--prefix=$INS_D --disable-shared"
 TARGET=x86_64-alpine-linux-musl
 
@@ -103,6 +98,7 @@ fetch_repo () {
         mkdir -p "$id"
         curl $(_get_value "$id" repo) | tar --strip-components=1 -C "$id" -xz
         cd "$id"
+        ;;
     esac
 }
 
@@ -145,13 +141,19 @@ cmd="$1"
 test -z "$cmd" && cmd=help || shift
 
 ### repo sets
-if test -z $1 
-then
+case "$1" in
+""|all)
     _get_column >$TMP/rset
-else
-    echo $1 | tr ',' '\n' >$TMP/rset
-fi
-_get_column name | grep -Ff $TMP/rset >$TMP/repos
+    ;;
+toolchain)
+    echo binutils,gmp,mpfr,mpc,gcc1,musl,gcc2 \
+        | tr ',' '\n' >$TMP/rset
+    ;;
+*)
+    echo "$1" | tr ',' '\n' >$TMP/rset
+    ;;
+esac
+_get_column name | grep -f $TMP/rset >$TMP/repos
 
 case "$cmd" in 
 fetch)
