@@ -1,3 +1,4 @@
 maybe build in chroot
 gmp check fails
 build sets
+logging channels

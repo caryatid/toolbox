@@ -15,9 +15,12 @@ SRC_D="$PRE_D/src"
 INS_D="$PRE_D/ins"
 BLD_D="$PRE_D/bld"
 PCH_D="$PRE_D/pch"
-export PATH="$INS_D/bin:$PATH"
-CONFFLAGS="--prefix=$INS_D --disable-shared"
+CONFFLAGS="--prefix=$INS_D --disable-shared --enable-static"
 TARGET=x86_64-alpine-linux-musl
+
+export PATH="$INS_D/bin:$PATH"
+export LDFLAGS="-static"
+export CFLAGS="-Bstatic"
 
 mkdir -p "$SRC_D" "$INS_D" "$BLD_D" "$PCH_D"
 
