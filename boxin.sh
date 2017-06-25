@@ -78,7 +78,7 @@ _make () {
 } 
 
 clean () {
-    rm -rf "$SRC_D" "$INS_D" "$BLD_D" "$PCH_D"
+    rm -rf "$SRC_D" "$INS_D" "$BLD_D"
 }
 
 fetch_repo () { 
