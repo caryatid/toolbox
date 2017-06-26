@@ -66,6 +66,7 @@ _patch () {
     cd "$SRC_D/$id"
     for p in in $PCH_D/*${id}.patch
     do
+        echo "$p"
         git apply "$p"
     done    
     cd "$_d"
