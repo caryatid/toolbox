@@ -1,9 +1,0 @@
-SRC="$1"; shift
-INS="$1"; shift
-TGT="$1"; shift
-(cd "$SRC"; ./.bootstrap)
-
-set -e
-"$SRC/configure" --enable-maintainer-mode --host=$TGT "$@"
-# make && make check && make install
-make && make install
