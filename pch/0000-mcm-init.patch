@@ -185,3 +185,190 @@ index 685d0d5..4b39dd8 100644
 -- 
 2.13.0
 
+From 0d2656b0c63c003a4303e3ee1b4a6ce48c4213bc Mon Sep 17 00:00:00 2001
+From: Dave Setchell <setchell.dave@gmail.com>
+Date: Sat, 24 Jun 2017 18:41:29 -0700
+Subject: [PATCH 1/3] initial
+
+---
+ Makefile   |  2 +-
+ config.mak | 72 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 73 insertions(+), 1 deletion(-)
+ create mode 100644 config.mak
+
+diff --git a/Makefile b/Makefile
+index b2ae96f..cbf53c7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -78,7 +78,7 @@ $(SOURCES):
+ 
+ $(SOURCES)/config.sub: | $(SOURCES)
+ 	mkdir -p $@.tmp
+-	cd $@.tmp && $(DL_CMD) $(notdir $@) "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=$(CONFIG_SUB_REV)"
++	cd $@.tmp && $(DL_CMD) $(notdir $@) "https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=$(CONFIG_SUB_REV)"
+ 	cd $@.tmp && touch $(notdir $@)
+ 	cd $@.tmp && sha1sum -c $(CURDIR)/hashes/$(notdir $@).$(CONFIG_SUB_REV).sha1
+ 	mv $@.tmp/$(notdir $@) $@
+diff --git a/config.mak b/config.mak
+new file mode 100644
+index 0000000..ea215a4
+--- /dev/null
++++ b/config.mak
+@@ -0,0 +1,72 @@
++#
++# config.mak.dist - sample musl-cross-make configuration
++#
++# Copy to config.mak and edit as desired.
++#
++
++# There is no default TARGET; you must select one here or on the make
++# command line. Some examples:
++
++# TARGET = i486-linux-musl
++TARGET = x86_64-linux-musl
++# TARGET = arm-linux-musleabi
++# TARGET = arm-linux-musleabihf
++# TARGET = sh2eb-linux-muslfdpic
++# ...
++# By default, cross compilers are installed to ./output under the top-level
++# musl-cross-make directory and can later be moved wherever you want them.
++# To install directly to a specific location, set it here. Multiple targets
++# can safely be installed in the same location. Some examples:
++
++# OUTPUT = /opt/cross
++# OUTPUT = /usr/local
++
++# By default, latest supported release versions of musl and the toolchain
++# components are used. You can override those here, but the version selected
++# must be supported (under hashes/ and patches/) to work. For musl, you
++# can use "git-refname" (e.g. git-master) instead of a release. Setting a
++# blank version for gmp, mpc, mpfr and isl will suppress download and
++# in-tree build of these libraries and instead depend on pre-installed
++# libraries when available (isl is optional and not set by default).
++# Setting a blank version for linux will suppress installation of kernel
++# headers, which are not needed unless compiling programs that use them.
++
++# BINUTILS_VER = 2.25.1
++# GCC_VER = 5.2.0
++# MUSL_VER = git-master
++# GMP_VER =
++# MPC_VER =
++# MPFR_VER =
++# ISL_VER =
++# LINUX_VER =
++
++# By default source archives are downloaded with wget. curl is also an option.
++
++# DL_CMD = wget -c -O
++# DL_CMD = curl -C - -L -o
++
++# Something like the following can be used to produce a static-linked
++# toolchain that's deployable to any system with matching arch, using
++# an existing musl-targeted cross compiler. This only # works if the
++# system you build on can natively (or via binfmt_misc and # qemu) run
++# binaries produced by the existing toolchain (in this example, i486).
++
++# 
++# COMMON_CONFIG += CC="x86_64-linux-musl-gcc -static --static" CXX="x86_64-linux-musl-g++ -static --static"
++
++# Recommended options for smaller build for deploying binaries:
++
++COMMON_CONFIG += CFLAGS="-g0 -Os" CXXFLAGS="-g0 -Os" LDFLAGS="-s"
++
++# Recommended options for faster/simpler build:
++
++# COMMON_CONFIG += --disable-nls
++# GCC_CONFIG += --enable-languages=c,c++
++# GCC_CONFIG += --disable-libquadmath --disable-decimal-float
++GCC_CONFIG += --disable-multilib
++
++# You can keep the local build path out of your toolchain binaries and
++# target libraries with the following, but then gdb needs to be told
++# where to look for source files.
++
++# COMMON_CONFIG += --with-debug-prefix-map=$(CURDIR)=
+-- 
+2.13.0
+
+
+From 21c1b1a7ad594eb2484e29025b9f452ef608187e Mon Sep 17 00:00:00 2001
+From: Dave Setchell <setchell.dave@gmail.com>
+Date: Sat, 24 Jun 2017 18:51:45 -0700
+Subject: [PATCH 2/3] primary
+
+---
+ config.mak | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/config.mak b/config.mak
+index ea215a4..685d0d5 100644
+--- a/config.mak
++++ b/config.mak
+@@ -19,7 +19,7 @@ TARGET = x86_64-linux-musl
+ # can safely be installed in the same location. Some examples:
+ 
+ # OUTPUT = /opt/cross
+-# OUTPUT = /usr/local
++OUTPUT = ./output_final
+ 
+ # By default, latest supported release versions of musl and the toolchain
+ # components are used. You can override those here, but the version selected
+@@ -52,7 +52,7 @@ TARGET = x86_64-linux-musl
+ # binaries produced by the existing toolchain (in this example, i486).
+ 
+ # 
+-# COMMON_CONFIG += CC="x86_64-linux-musl-gcc -static --static" CXX="x86_64-linux-musl-g++ -static --static"
++COMMON_CONFIG += CC="x86_64-linux-musl-gcc -static --static" CXX="x86_64-linux-musl-g++ -static --static"
+ 
+ # Recommended options for smaller build for deploying binaries:
+ 
+-- 
+2.13.0
+
+
+From 8b6c3eb12b1adfa4303b874d21dfadaf7d85808f Mon Sep 17 00:00:00 2001
+From: Dave Setchell <setchell.dave@gmail.com>
+Date: Mon, 26 Jun 2017 14:46:04 -0700
+Subject: [PATCH 3/3] first go
+
+---
+ config.mak | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/config.mak b/config.mak
+index 685d0d5..4b39dd8 100644
+--- a/config.mak
++++ b/config.mak
+@@ -19,7 +19,7 @@ TARGET = x86_64-linux-musl
+ # can safely be installed in the same location. Some examples:
+ 
+ # OUTPUT = /opt/cross
+-OUTPUT = ./output_final
++OUTPUT = "$PWD/output_init"
+ 
+ # By default, latest supported release versions of musl and the toolchain
+ # components are used. You can override those here, but the version selected
+@@ -52,7 +52,7 @@ OUTPUT = ./output_final
+ # binaries produced by the existing toolchain (in this example, i486).
+ 
+ # 
+-COMMON_CONFIG += CC="x86_64-linux-musl-gcc -static --static" CXX="x86_64-linux-musl-g++ -static --static"
++# COMMON_CONFIG += CC="x86_64-linux-musl-gcc -static --static" CXX="x86_64-linux-musl-g++ -static --static"
+ 
+ # Recommended options for smaller build for deploying binaries:
+ 
+@@ -60,9 +60,9 @@ COMMON_CONFIG += CFLAGS="-g0 -Os" CXXFLAGS="-g0 -Os" LDFLAGS="-s"
+ 
+ # Recommended options for faster/simpler build:
+ 
+-# COMMON_CONFIG += --disable-nls
++COMMON_CONFIG += --disable-nls
+ # GCC_CONFIG += --enable-languages=c,c++
+-# GCC_CONFIG += --disable-libquadmath --disable-decimal-float
++GCC_CONFIG += --disable-libquadmath --disable-decimal-float
+ GCC_CONFIG += --disable-multilib
+ 
+ # You can keep the local build path out of your toolchain binaries and
+-- 
+2.13.0
+

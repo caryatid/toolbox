@@ -61,7 +61,14 @@ _loop_repos () {
 }
 
 _patch () {
-    echo "patch not implemented, arg: $1"
+    local id="$1"
+    local _d="$PWD"
+    cd "$SRC_D/$id"
+    for p in in $PCH_D/*${id}.patch
+    do
+        git apply "$p"
+    done    
+    cd "$_d"
 }
 
 _make () {
