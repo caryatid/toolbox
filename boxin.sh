@@ -64,9 +64,8 @@ _patch () {
     local id="$1"
     local _d="$PWD"
     cd "$SRC_D/$id"
-    for p in in $PCH_D/*${id}.patch
+    for p in $PCH_D/*${id}.patch
     do
-        echo "$p"
         git apply "$p"
     done    
     cd "$_d"

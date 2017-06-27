@@ -1,0 +1,25 @@
+From 732f77efd43ecb32f64392ebabd070d0c5398817 Mon Sep 17 00:00:00 2001
+From: Dave Setchell <setchell.dave@gmail.com>
+Date: Mon, 26 Jun 2017 16:26:19 -0700
+Subject: [PATCH] changes to working url
+
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index b2ae96f..cbf53c7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -78,7 +78,7 @@ $(SOURCES):
+ 
+ $(SOURCES)/config.sub: | $(SOURCES)
+ 	mkdir -p $@.tmp
+-	cd $@.tmp && $(DL_CMD) $(notdir $@) "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=$(CONFIG_SUB_REV)"
++	cd $@.tmp && $(DL_CMD) $(notdir $@) "https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=$(CONFIG_SUB_REV)"
+ 	cd $@.tmp && touch $(notdir $@)
+ 	cd $@.tmp && sha1sum -c $(CURDIR)/hashes/$(notdir $@).$(CONFIG_SUB_REV).sha1
+ 	mv $@.tmp/$(notdir $@) $@
+-- 
+2.13.0
+

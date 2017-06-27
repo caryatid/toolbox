@@ -50,4 +50,4 @@ EOF
 export PATH="$PWD/../mcm-init/output_init/bin:$PATH" 
 make && make install
 
-cp -Rp output_final/* "$INS"
+cp -Rp output/* "$INS"

@@ -4,13 +4,9 @@ mcm-primary,git@github.com:richfelker/musl-cross-make.git,master,git
 abduco,git@github.com:martanne/abduco,master,git
 dvtm,git@github.com:martanne/dvtm,master,git
 netbsd-curses,git@github.com:sabotage-linux/netbsd-curses,master,git
-vis,git@github.com:martanne/vis,master,git
-dwm,git://git.suckless.org/dwm,master,git
-st,git://git.suckless.org/st,master,git
 ii,git://git.suckless.org/ii,master,git
-plans,git@github.com:caryatid/plans,master,git
-simple-plan,git@github.com:caryatid/simple-plan,master,git
 libtermkey,git@github.com:neovim/libtermkey,master,git
 unibilium,git@github.com:mauke/unibilium.git,master,git
 lua,git@github.com:lua/lua.git,master,git
 lpeg,git@github.com:caryatid/lpeg.git,master,git
+vis,git@github.com:martanne/vis,master,git
