@@ -12,8 +12,7 @@ TARGET = x86_64-linux-musl
 # TARGET = arm-linux-musleabihf
 # TARGET = sh2eb-linux-muslfdpic
 
-# OUTPUT = "${CURDIR}/output_init"
-
+# OUTPUT = "$PWD/output"
 # BINUTILS_VER = 2.25.1
 # GCC_VER = 5.2.0
 # MUSL_VER = git-master
@@ -35,7 +34,7 @@ COMMON_CONFIG += CFLAGS="-g0 -Os" CXXFLAGS="-g0 -Os" LDFLAGS="-s"
 
 # Recommended options for faster/simpler build:
 
-COMMON_CONFIG += --enable-default-pie --disable-nls
+COMMON_CONFIG += --disable-nls
 # GCC_CONFIG += --enable-languages=c,c++
 # GCC_CONFIG += --disable-libquadmath --disable-decimal-float
 GCC_CONFIG += --disable-multilib
