@@ -16,7 +16,7 @@ INS_D="$PRE_D/ins"
 BLD_D="$PRE_D/bld"
 PCH_D="$PRE_D/pch"
 CONFFLAGS="--prefix=$INS_D --disable-shared --enable-static"
-TARGET=x86_64-alpine-linux-musl
+TARGET=x86_64-linux-musl
 
 export PATH="$INS_D/bin:$PATH"
 export LDFLAGS="-static"
