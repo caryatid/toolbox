@@ -35,7 +35,7 @@ COMMON_CONFIG += CFLAGS="-g0 -Os" CXXFLAGS="-g0 -Os" LDFLAGS="-s"
 
 # Recommended options for faster/simpler build:
 
-# COMMON_CONFIG += --disable-nls
+COMMON_CONFIG += --enable-default-pie --disable-nls
 # GCC_CONFIG += --enable-languages=c,c++
 # GCC_CONFIG += --disable-libquadmath --disable-decimal-float
 GCC_CONFIG += --disable-multilib
