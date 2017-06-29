@@ -12,12 +12,12 @@ VERSION = 0.6
 
 MANPREFIX = ${PREFIX}/share/man
 
-INCS = -I. -I${PREFIX}/include -I${PREFIX}/${TARGET}/include
-LIBS = -lc -lutil -lgcc
+INCS = -I. -I${PREFIX}/include -I${PREFIX}/${TARGET}/include -nostdinc
+LIBS = 
 
 CPPFLAGS = -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700
-CFLAGS +=  -std=c99 -pedantic -Wall ${INCS} -DVERSION=\"${VERSION}\" -DNDEBUG ${CPPFLAGS}  -nostdinc 
-LDFLAGS += ${LIBS} -L${PREFIX}/lib -L${PREFIX}/${TARGET}/lib -nostdlib -static
+CFLAGS +=  -std=c99 -pedantic -Wall ${INCS} -DVERSION=\"${VERSION}\" -DNDEBUG ${CPPFLAGS} 
+LDFLAGS += ${LIBS} -L${PREFIX}/lib -L${PREFIX}/${TARGET}/lib -static -nodefaultlibs
 
 DEBUG_CFLAGS = ${CFLAGS} -UNDEBUG -O0 -g -ggdb
 
