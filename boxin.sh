@@ -156,7 +156,10 @@ case "$1" in
     _get_column >$TMP/rset
     ;;
 toolchain)
-    echo binutils,gmp,mpfr,mpc,gcc1,musl,gcc2 \
+    echo ^mcm | tr ',' '\n' >$TMP/rset
+    ;;
+test)
+    echo ^mcm,abduco,netbsd,mksh,dvtm \
         | tr ',' '\n' >$TMP/rset
     ;;
 *)
