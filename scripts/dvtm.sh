@@ -13,8 +13,8 @@ MANPREFIX = ${PREFIX}/share/man
 TERMINFO := ${PREFIX}/share/terminfo
 
 INCS = -I. -nostdinc -I${PREFIX}/include -I${PREFIX}/${TARGET}/include
-LDFLAGS = -L${PREFIX}/lib -L${PREFIX}/${TARGET}/lib 
-LIBS = -lc -lutil  -lncursesw -lterminfo -nodefaultlibs
+LDFLAGS = -L${PREFIX}/lib -L${PREFIX}/${TARGET}/lib -static
+LIBS = -lncursesw -lterminfo -nodefaultlibs -lc -lutil  
 CPPFLAGS = -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -D_XOPEN_SOURCE_EXTENDED
 CFLAGS += -std=c99 ${INCS} -DNDEBUG ${CPPFLAGS}
 
