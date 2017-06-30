@@ -1,0 +1,25 @@
+From bb893b98b2ec6684dd36114b5b1cbcc43dfbbf39 Mon Sep 17 00:00:00 2001
+From: Dave Setchell <setchell.dave@gmail.com>
+Date: Thu, 29 Jun 2017 19:30:29 -0700
+Subject: [PATCH] patchin
+
+---
+ GNUmakefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index fc76411..d0811df 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -450,7 +450,7 @@ tic/hash.c: libterminfo/hash.c
+ 	cp libterminfo/hash.c tic/hash.c
+ 
+ $(TOOL_TTIC): $(TIC_OBJS)
+-	$(CC) $(LDFLAGS) $^ -o $@
++	$(CC) $^ $(LDFLAGS)  -o $@
+ 
+ TERMINFODIR=./terminfo
+ SCRIPT_ENV=	\
+-- 
+2.13.0
+

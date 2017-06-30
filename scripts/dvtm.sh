@@ -10,11 +10,11 @@ cat <<'EOF' >>config.mk
 MANPREFIX = ${PREFIX}/share/man
 # specify your systems terminfo directory
 # leave empty to install into your home folder
-TERMINFO := ${DESTDIR}${PREFIX}/share/terminfo
+TERMINFO := ${PREFIX}/share/terminfo
 
 INCS = -I. -nostdinc -I${PREFIX}/include -I${PREFIX}/${TARGET}/include
 LDFLAGS = -L${PREFIX}/lib -L${PREFIX}/${TARGET}/lib 
-LIBS =  -lc -lutil -lncursesw -nodefaultlibs
+LIBS = -lc -lutil  -lncursesw -lterminfo -nodefaultlibs
 CPPFLAGS = -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -D_XOPEN_SOURCE_EXTENDED
 CFLAGS += -std=c99 ${INCS} -DNDEBUG ${CPPFLAGS}
 
@@ -22,6 +22,4 @@ CC = ${TARGET}-gcc
 EOF
 
 make | tee foo.log 
-
-
 
