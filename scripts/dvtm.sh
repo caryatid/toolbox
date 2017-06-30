@@ -21,5 +21,5 @@ CFLAGS += -std=c99 ${INCS} -DNDEBUG ${CPPFLAGS}
 CC = ${TARGET}-gcc
 EOF
 
-make | tee foo.log 
+make | tee foo.log && make install
 
