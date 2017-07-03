@@ -11,4 +11,4 @@ export CFLAGS="-std=c99 ${INCS}"
 export CC=${TGT}-gcc
 
 ./configure --prefix="$INS" --enable-curses
-make
+make && make install
