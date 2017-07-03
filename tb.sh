@@ -15,7 +15,6 @@ SRC_D="$PRE_D/src"
 INS_D="$PRE_D/ins"
 BLD_D="$PRE_D/bld"
 PCH_D="$PRE_D/pch"
-# CONFFLAGS="--prefix=$INS_D --disable-shared --enable-static"
 TARGET=x86_64-linux-musl
 
 export PATH="$INS_D/bin:$PATH"
@@ -76,11 +75,9 @@ _make () {
     local script="$SH_D/${id}.sh"
     if test -f "$script"
     then
-        sh "$script" "$SRC_D/$id" "$INS_D" $TARGET $CONFFLAGS
+        sh "$script" "$SRC_D/$id" "$INS_D" $TARGET
     else
-        local conf="$SRC_D/$id/configure"
-        test -f "$conf" && "$conf" --target=$TARGET $CONFFLAGS
-        make && make install
+        echo "no build rules for $id"
     fi
 } 
 
@@ -157,10 +154,6 @@ case "$1" in
     ;;
 toolchain)
     echo ^mcm | tr ',' '\n' >$TMP/rset
-    ;;
-test)
-    echo ^mcm,abduco,netbsd,mksh,dvtm \
-        | tr ',' '\n' >$TMP/rset
     ;;
 *)
     echo "$1" | tr ',' '\n' >$TMP/rset
