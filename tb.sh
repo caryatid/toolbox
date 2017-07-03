@@ -126,12 +126,13 @@ shell_repo () {
     cd "$src"; PS1_SUB="[$id]" $SHELL
 }
 
-install () {
-    echo not implemented
-}
-
 remote () {
-    echo not implemented
+    # TODO will need to determine arch
+    # test if remote has less recent $HOME/.toolbox dir
+    #    - .toolbox/<name> -- contains seconds since epoch
+    # none or less recent -> transfer
+    # install .mkshrc if not present -- sources .toolbox/mkshrc
+    # ssh w/ mksh shell thus path
 }
 
 while test -n "$1" && test "$1" != "${1#-*}"
