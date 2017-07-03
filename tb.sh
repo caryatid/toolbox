@@ -4,11 +4,13 @@ TMP=$(mktemp -d)
 trap "rm -rf $TMP" EXIT
 OG_D="$PWD"
 
-PRE_D="$PWD"
-CODE_D="$PWD"
+PRE_D="$PWD" 
+CODE_D=$(type -p "$0")
 FRESH=no
 
 SH_D="$CODE_D/scripts"
+EXT_D="$CODE_D/extra"
+CFG_D="$CODE_D/config"
 RDATA="$CODE_D/repodata.csv"
 
 SRC_D="$PRE_D/src"
@@ -18,10 +20,8 @@ PCH_D="$PRE_D/pch"
 TARGET=x86_64-linux-musl
 
 export PATH="$INS_D/bin:$PATH"
-export LDFLAGS="-static"
-export CFLAGS="-Bstatic"
-
-mkdir -p "$SRC_D" "$INS_D" "$BLD_D" "$PCH_D"
+mkdir -p "$SRC_D" "$INS_D" "$BLD_D"
+cp "$EXT_D/*" "$INS_D" 
 
 cat <<'EOF' >$TMP/column
 BEGIN { FS=","; COL=ARGV[2]; ARGV[2]=""}
@@ -126,13 +126,29 @@ shell_repo () {
     cd "$src"; PS1_SUB="[$id]" $SHELL
 }
 
+activate () {
+    echo activates local machine
+}
+
+package () {
+    echo foo
+    mkdir $PRE_D/.toolbox && cd "$PRE_D/.toolbox"
+    ln -s 
+    
+    sa.sh, mkshrc ( place or source from HOME ), toolbox itself
+    build "home" dir && tar it
+    put tar in location
+}
+
 remote () {
     # TODO will need to determine arch
+    # test for ssh-agent?
     # test if remote has less recent $HOME/.toolbox dir
     #    - .toolbox/<name> -- contains seconds since epoch
     # none or less recent -> transfer
     # install .mkshrc if not present -- sources .toolbox/mkshrc
     # ssh w/ mksh shell thus path
+    echo not implemented
 }
 
 while test -n "$1" && test "$1" != "${1#-*}"
