@@ -1,0 +1,47 @@
+From d7adcd883bac199fbc9b94e8396ca4720afd9849 Mon Sep 17 00:00:00 2001
+From: Dave Setchell <setchell.dave@gmail.com>
+Date: Sun, 2 Jul 2017 19:03:12 -0700
+Subject: [PATCH] patch
+
+---
+ Makefile | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index ced5ecb..ee49eb1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,5 +1,6 @@
++# PREFIX=set externally
++# TARGET=set externally
+ LIBNAME = lpeg
+-LUADIR = ../lua/
+ 
+ COPT = -O2
+ # COPT = -DLPEG_DEBUG -g
+@@ -22,14 +23,19 @@ CWARNS = -Wall -Wextra -pedantic \
+ # -Wunreachable-code \
+ 
+ 
+-CFLAGS = $(CWARNS) $(COPT) -std=c99 -I$(LUADIR) -fPIC -fPIE
+-CC = gcc
++INCS = -I. -nostdinc -I${PREFIX}/include -I${PREFIX}/${TARGET}/include
++LIBS = -lc -llua
++LDFLAGS = -L${PREFIX}/lib -L${PREFIX}/${TARGET}/lib -static -nodefaultlibs ${LIBS}
++CFLAGS += -std=c99 ${INCS} -DNDEBUG ${LDFLAGS}
++
++CFLAGS += $(CWARNS) $(COPT)
++CC = ${TARGET}-gcc -static
+ 
+ FILES = lpvm.o lpcap.o lptree.o lpcode.o lpprint.o
+ 
+ # For Linux
+ linux:
+-	make liblpeg.a "DLLFLAGS = -nostartfiles"
++	make liblpeg.a
+ 
+ # For Mac OS
+ macosx:
+-- 
+2.13.0
+

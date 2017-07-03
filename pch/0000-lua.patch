@@ -1,7 +1,7 @@
-From 44691257b4f0220e2c03579e3aaa0587647d521f Mon Sep 17 00:00:00 2001
+From 365e6ad5d2f11ca2924c02bfacf2a48b96910041 Mon Sep 17 00:00:00 2001
 From: Dave Setchell <setchell.dave@gmail.com>
-Date: Sun, 2 Jul 2017 17:02:40 -0700
-Subject: [PATCH] patchin
+Date: Sun, 2 Jul 2017 19:07:22 -0700
+Subject: [PATCH] patch
 
 ---
  luaconf.h |  4 ++--
@@ -24,12 +24,12 @@ index 118f997a..02962b50 100644
  
  
 diff --git a/makefile b/makefile
-index 8160d4fb..2dc272c4 100644
+index 8160d4fb..a762ed55 100644
 --- a/makefile
 +++ b/makefile
 @@ -1,3 +1,5 @@
-+PREFIX=/home/dave/repos/toolbox/ins
-+TARGET=x86_64-linux-musl
++# PREFIX=set externally
++# TARGET=set externally
  # makefile for building Lua
  # see INSTALL for installation instructions
  # see ../Makefile and luaconf.h for further customization

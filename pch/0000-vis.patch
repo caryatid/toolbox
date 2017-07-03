@@ -1,0 +1,96 @@
+From f16dbeedc234e15958224ec7cd83e841381358aa Mon Sep 17 00:00:00 2001
+From: Dave Setchell <setchell.dave@gmail.com>
+Date: Sun, 2 Jul 2017 20:02:32 -0700
+Subject: [PATCH] patch
+
+---
+ Makefile  |  2 +-
+ configure | 22 +++++++++++-----------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 049bae7..5fdf6a2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -64,7 +64,7 @@ config.mk:
+ 	@touch $@
+ 
+ vis: config.h config.mk *.c *.h
+-	${CC} ${CFLAGS} ${CFLAGS_VIS} ${CFLAGS_EXTRA} ${SRC} ${LDFLAGS} ${LDFLAGS_VIS} -o $@
++	${CC} ${CFLAGS} ${CFLAGS_VIS} ${CFLAGS_EXTRA} ${SRC} ${LDFLAGS} ${LDFLAGS_VIS} -o $@ ${LIBS}
+ 
+ vis-menu: vis-menu.c
+ 	${CC} ${CFLAGS} ${CFLAGS_AUTO} ${CFLAGS_STD} ${CFLAGS_EXTRA} $< ${LDFLAGS} ${LDFLAGS_STD} ${LDFLAGS_AUTO} -o $@
+diff --git a/configure b/configure
+index 67f7dfd..bb92d78 100755
+--- a/configure
++++ b/configure
+@@ -237,14 +237,14 @@ tryflag CFLAGS -pipe
+ tryflag CFLAGS -Os
+ tryflag CFLAGS -ffunction-sections
+ tryflag CFLAGS -fdata-sections
+-tryldflag LDFLAGS_AUTO -Wl,--gc-sections
++# tryldflag LDFLAGS_AUTO -Wl,--gc-sections
+ 
+ # Try hardening flags
+-tryflag CFLAGS -fPIE
+-tryflag CFLAGS_AUTO -fstack-protector-all
+-tryldflag LDFLAGS -Wl,-z,now
+-tryldflag LDFLAGS -Wl,-z,relro
+-tryldflag LDFLAGS_AUTO -pie
++# tryflag CFLAGS -fPIE
++# tryflag CFLAGS_AUTO -fstack-protector-all
++# tryldflag LDFLAGS -Wl,-z,now
++# tryldflag LDFLAGS -Wl,-z,relro
++# tryldflag LDFLAGS_AUTO -pie
+ 
+ printf "creating config.mk... "
+ 
+@@ -315,7 +315,7 @@ EOF
+ 			CFLAGS_CURSES=$(pkg-config --cflags $libcurses 2>/dev/null)
+ 			LDFLAGS_CURSES=$(pkg-config --libs $libcurses 2>/dev/null)
+ 			if test $? -eq 0 && $CC $CFLAGS $CFLAGS_CURSES "$tmpc" \
+-				$LDFLAGS $LDFLAGS_CURSES -o "$tmpo" >/dev/null 2>&1 ; then
++				$LDFLAGS $LDFLAGS_CURSES -o "$tmpo" $LIBS >/dev/null 2>&1 ; then
+ 				CONFIG_CURSES=1
+ 				printf "yes\n"
+ 				break
+@@ -363,7 +363,7 @@ if test -z "$LDFLAGS_TERMKEY"; then
+ fi
+ 
+ if $CC $CFLAGS $CFLAGS_TERMKEY "$tmpc" $LDFLAGS $LDFLAGS_TERMKEY $LDFLAGS_CURSES \
+-	-o "$tmpo" >/dev/null 2>&1; then
++	-o "$tmpo" $LIBS >/dev/null 2>&1; then
+ 	printf "%s\n" "yes"
+ else
+ 	printf "%s\n" "no"
+@@ -448,7 +448,7 @@ EOF
+ 			CFLAGS_LUA=$(pkg-config --cflags $liblua 2>/dev/null)
+ 			LDFLAGS_LUA=$(pkg-config --libs $liblua 2>/dev/null)
+ 			if test $? -eq 0 && $CC $CFLAGS $CFLAGS_LUA "$tmpc" \
+-				$LDFLAGS $LDFLAGS_LUA -o "$tmpo" >/dev/null 2>&1 ; then
++				$LDFLAGS $LDFLAGS_LUA -o "$tmpo" $LIBS >/dev/null 2>&1 ; then
+ 				CONFIG_LUA=1
+ 				printf "yes\n"
+ 				break
+@@ -506,7 +506,7 @@ EOF
+ 	LDFLAGS_LPEG="-llpeg"
+ 
+ 	if $CC $CFLAGS $CFLAGS_LUA $CFLAGS_LPEG "$tmpc" \
+-		$LDFLAGS $LDFLAGS_LUA $LDFLAGS_LPEG -o "$tmpo" >/dev/null 2>&1 ; then
++		$LDFLAGS $LDFLAGS_LUA $LDFLAGS_LPEG -o "$tmpo" $LIBS >/dev/null 2>&1 ; then
+ 		CONFIG_LPEG=1
+ 		printf "yes\n"
+ 		break
+@@ -602,7 +602,7 @@ int main(int argc, char *argv[]) {
+ }
+ EOF
+ 
+-if $CC $CFLAGS "$tmpc" $LDFLAGS -o "$tmpo" >/dev/null 2>&1; then
++if $CC $CFLAGS "$tmpc" $LDFLAGS -o "$tmpo" $LIBS >/dev/null 2>&1; then
+ 	HAVE_MEMRCHR=1
+ 	printf "%s\n" "yes"
+ else
+-- 
+2.13.0
+
