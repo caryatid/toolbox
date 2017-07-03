@@ -2,8 +2,8 @@
 
 TMP=$(mktemp -d)
 trap "rm -rf $TMP" EXIT
-
 OG_D="$PWD"
+
 PRE_D="$PWD"
 CODE_D="$PWD"
 FRESH=no
@@ -15,7 +15,7 @@ SRC_D="$PRE_D/src"
 INS_D="$PRE_D/ins"
 BLD_D="$PRE_D/bld"
 PCH_D="$PRE_D/pch"
-CONFFLAGS="--prefix=$INS_D --disable-shared --enable-static"
+# CONFFLAGS="--prefix=$INS_D --disable-shared --enable-static"
 TARGET=x86_64-linux-musl
 
 export PATH="$INS_D/bin:$PATH"

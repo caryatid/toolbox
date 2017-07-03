@@ -1,0 +1,87 @@
+From 44691257b4f0220e2c03579e3aaa0587647d521f Mon Sep 17 00:00:00 2001
+From: Dave Setchell <setchell.dave@gmail.com>
+Date: Sun, 2 Jul 2017 17:02:40 -0700
+Subject: [PATCH] patchin
+
+---
+ luaconf.h |  4 ++--
+ makefile  | 21 +++++++++++----------
+ 2 files changed, 13 insertions(+), 12 deletions(-)
+
+diff --git a/luaconf.h b/luaconf.h
+index 118f997a..02962b50 100644
+--- a/luaconf.h
++++ b/luaconf.h
+@@ -60,8 +60,8 @@
+ 
+ #if defined(LUA_USE_LINUX)
+ #define LUA_USE_POSIX
+-#define LUA_USE_DLOPEN		/* needs an extra library: -ldl */
+-#define LUA_USE_READLINE	/* needs some extra libraries */
++#undef LUA_USE_DLOPEN		/* needs an extra library: -ldl */
++#undef LUA_USE_READLINE	/* needs some extra libraries */
+ #endif
+ 
+ 
+diff --git a/makefile b/makefile
+index 8160d4fb..2dc272c4 100644
+--- a/makefile
++++ b/makefile
+@@ -1,3 +1,5 @@
++PREFIX=/home/dave/repos/toolbox/ins
++TARGET=x86_64-linux-musl
+ # makefile for building Lua
+ # see INSTALL for installation instructions
+ # see ../Makefile and luaconf.h for further customization
+@@ -35,7 +37,7 @@ CWARNSC= -Wdeclaration-after-statement \
+ 	-Wold-style-definition \
+ 
+ 
+-CWARNS= $(CWARNSCPP)  $(CWARNSC)
++CWARNS= # $(CWARNSCPP)  $(CWARNSC)
+ 
+ 
+ # -DEXTERNMEMCHECK -DHARDSTACKTESTS -DHARDMEMTESTS -DTRACEMEM='"tempmem"'
+@@ -44,23 +46,22 @@ CWARNS= $(CWARNSCPP)  $(CWARNSC)
+ # -DLUA_USE_CTYPE -DLUA_USE_APICHECK
+ # (in clang, '-ftrapv' for runtime checks of integer overflows)
+ # -fsanitize=undefined -ftrapv
+-TESTS= -DLUA_USER_H='"ltests.h"'
++# TESTS= -DLUA_USER_H='"ltests.h"'
+ 
+ # -mtune=native -fomit-frame-pointer
+ # -fno-stack-protector
+-LOCAL = $(TESTS) $(CWARNS) -g
++LOCAL = $(TESTS) $(CWARNS)
+ 
+ 
+ 
+ # enable Linux goodies
+-MYCFLAGS= $(LOCAL) -std=c99 -DLUA_USE_LINUX -DLUA_COMPAT_5_2
+-MYLDFLAGS= $(LOCAL) -Wl,-E
+-MYLIBS= -ldl -lreadline
++MYCFLAGS= $(LOCAL) -std=c99 -DLUA_USE_LINUX -DLUA_COMPAT_5_2 -I. -nostdinc -I${PREFIX}/include -I${PREFIX}/${TARGET}/include 
++MYLDFLAGS= $(LOCAL) -L. -L${PREFIX}/lib -L${PREFIX}/${TARGET}/lib -nodefaultlibs -static
++MYLIBS=-lc
+ 
+-
+-CC= clang-3.8
++CC=${TARGET}-gcc -static
+ CFLAGS= -Wall -O2 $(MYCFLAGS)
+-AR= ar rcu
++AR=${TARGET}-ar ru
+ RANLIB= ranlib
+ RM= rm -f
+ 
+@@ -69,7 +70,7 @@ RM= rm -f
+ # == END OF USER SETTINGS. NO NEED TO CHANGE ANYTHING BELOW THIS LINE =========
+ 
+ 
+-LIBS = -lm
++LIBS =
+ 
+ CORE_T=	liblua.a
+ CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o \
+-- 
+2.13.0
+
