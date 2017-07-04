@@ -1,0 +1,37 @@
+\alias l='ls -F'
+\alias la='l -a'
+\alias ll='l -l'
+\alias lo='l -alo'
+
+
+_pathmunge () {
+    # thx mksh :*
+    echo :$PATH: | grep -q ".*:$1:.*" || PATH=$(echo $1:$PATH | sed 's/:$//')
+    # standard
+#    case ":${PATH:=$1}:" in
+#        *:$1:*)  ;;
+#        *) PATH="$1:$PATH"  ;;
+#    esac
+}
+for p in ~/.etc/bin ~/bin ~/.toolbox/bin; do
+    _pathmunge "$p"
+done
+unset p
+
+type vis >/dev/null 2>&1 && EDITOR=vis || EDITOR=vi
+
+\export MANWIDTH=80 LESSHISTFILE=- EDITOR PATH
+
+_show_ps1 () {
+    local date=$(date +"%a %d %b %H:%M")
+    local dir=$(echo $PWD | rev | cut -c-23 | rev)
+    local slug=$(printf '(- %-23.23s -)' "$dir")
+    local slug_=$(printf '(- %16.16s -)' "$date")
+    local slug__=$(printf '(- %3.3d -)' ${SHLVL:-0})
+    slug="$slug$slug_$slug__"
+    printf '--]%72.72s[--' "$slug" 
+}
+
+PS1='
+$(_show_ps1)
+$PS1_SUB--] '
